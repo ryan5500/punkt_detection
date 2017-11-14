@@ -1,26 +1,12 @@
-FROM ubuntu_kenlm
+FROM python:latest
 
-# Install boost
-RUN set -ex \
-  && buildDeps=' \
-    git \
-    cmake \
-    libboost-all-dev \
-    libeigen3-dev \
-  ' \
-  && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
-# Install kenlm
+# Install KenLM (Query only)
 RUN  git clone https://github.com/kpu/kenlm.git \
-     && cd kenlm \
-     && mkdir -p build \
-     && cd build \
-     && cmake .. \
-     && make -j 4 \
-     && export "KENLM=/kenlm" >> ~/.profile \
-     && export "PATH=$PATH:$KENLM=/build/bin" >> ~/.profile
-
-RUN pip install https://github.com/kpu/kenlm/archive/master.zip
+  && cd kenlm \
+  && /bin/bash -c "source activate jupyterenv && ./compile_query_only.sh && pip install https://github.com/kpu/kenlm/archive/master.zip" \
+  && export "KENLM=/kenlm" >> ~/.profile \
+  && export "PATH=$PATH:$KENLM=/bin" >> ~/.profile
 
 
 # Setup MeCab
@@ -56,8 +42,8 @@ RUN set -ex \
     mecab-${MECAB_VERSION}* \
     mecab-ipadic*
 
+RUN  /bin/bash -c "source activate jupyterenv && pip install mecab-python3"
 
-RUN pip install jupyter notebook mecab-python3
 
 ## /data is supporsed to be mounted on punkt_detection/data on the host
 ## model file is manually downloaded to punkt_detection/data
