@@ -15,13 +15,8 @@ ENV IPADIC_VERSION 2.7.0-20070801
 ENV mecab_url https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE
 ENV ipadic_url https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7MWVlSDBCSXZMTXM
 RUN set -ex \
-  && buildDeps=' \
-    g++ \
-    xz-utils \
-    file \
-  ' \
+  && buildDeps='g++ xz-utils file' \
   && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-  \
   && wget -O mecab-${MECAB_VERSION}.tar.gz ${mecab_url} \
   && tar zxf mecab-${MECAB_VERSION}.tar.gz \
   && cd mecab-${MECAB_VERSION} \
@@ -30,7 +25,6 @@ RUN set -ex \
   && make install \
   && cd \
   && ldconfig \
-## Install IPA dict
   && wget -O mecab-ipadic-${IPADIC_VERSION}.tar.gz ${ipadic_url} \
   && tar zxf mecab-ipadic-${IPADIC_VERSION}.tar.gz \
   && cd mecab-ipadic-${IPADIC_VERSION} \
@@ -38,9 +32,7 @@ RUN set -ex \
   && make \
   && make install \
   && cd \
-  && rm -rf \
-    mecab-${MECAB_VERSION}* \
-    mecab-ipadic*
+  && rm -rf mecab-${MECAB_VERSION}* mecab-ipadic*
 
 RUN  /bin/bash -c "source activate jupyterenv && pip install mecab-python3"
 
