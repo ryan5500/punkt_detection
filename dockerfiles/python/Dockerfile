@@ -47,9 +47,8 @@ RUN conda create -n jupyterenv python=3.5 numpy jupyter
 
 ## Jupyter setup
 RUN  /bin/bash -c "source activate jupyterenv && pip install environment_kernels && jupyter notebook --generate-config --allow-root" \
-  && echo "c.EnvironmentKernelSpecManager.conda_env_dirs = [ '/opt/conda/envs/' ]" >> ~/.jupyter/jupyter_notebook_config.py \
-  && sed ~/.jupyter/jupyter_notebook_config.py -e 's/^.*c.NotebookApp.password = .*$/c.NotebookApp.password = "sha1:74be20ca510cdd22c196c6cc29b779e67624a5ad"/g' > tmp.py \
-  && mv tmp.py ~/.jupyter/jupyter_notebook_config.py
+  && echo "c.EnvironmentKernelSpecManager.conda_env_dirs = [ '/opt/conda/envs/' ]" >> ~/.jupyter/jupyter_notebook_config.py
+
 
 RUN echo "source activate jupyterenv" >> ~/.profile
 

@@ -57,6 +57,8 @@ RUN set -ex \
     libsm6 \
     libxext6 \
     libxrender1 \
+    nano \
+    vi \
   ' \
   && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
