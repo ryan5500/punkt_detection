@@ -58,7 +58,7 @@ RUN set -ex \
     libxext6 \
     libxrender1 \
     nano \
-    vi \
+    vim \
   ' \
   && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
